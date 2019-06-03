@@ -1,6 +1,6 @@
 import pandas as pd
-import matplotlib as mpl
-import matplotlib.pyplot as plt
+import matplotlibExample as mpl
+import matplotlibExample.pyplot as plt
 from keras.losses import mean_squared_error, mean_absolute_error
 from sklearn.cross_validation import train_test_split
 from sklearn.linear_model import LinearRegression

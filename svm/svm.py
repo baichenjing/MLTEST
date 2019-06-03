@@ -18,6 +18,7 @@ def smoP(dataMatIn,classLabels,C,toler,maxIter,kTup=('lin',0)):
         if entireSet:entireSet=False
         elif (alphaPairsChanged==0):entireSet=True
     return oS.b,os.alphas
+
 def kernelTrans(X,A,kTup):
     m,n=shape(X)
     K=mat(zeros((m,1)))

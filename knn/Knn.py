@@ -34,7 +34,7 @@ def classify0(intX,dataSet,labels,k):
 
 def KNN_classify():
     datingDataMat,datingLabels=file2matrix('datingTestSet2.txt')
-    import matplotlib.pyplot as plt
+    import matplotlibExample.pyplot as plt
     fig=plt.figure()
     ax=fig.add_subplot(111)
     ax.scatter(datingDataMat[:,1],datingDataMat[:,2])

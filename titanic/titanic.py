@@ -1,10 +1,10 @@
 import pandas as pd
 import numpy as np
 from sklearn import tree
-import graphvize
-train=pd.read_csv('../input/train.csv')
-test=pd.read_csv('../input/test.csv')
+train=pd.read_csv('./input/train.csv')
+test=pd.read_csv('./input/test.csv')
 
+print("train shape "+str(train.shape))
 print("train shape "+str(train.shape))
 print("test shape "+str(test.shape))
 print("train columns "+str(train.columns))
@@ -33,7 +33,7 @@ def groupby_age_sex(row):
         else:
             return 2
 
-ages['group']=ages.apply(lambda  x:groupby_age_sex(x),axis=1)
+ages['group']=ages.apply(lambda x:groupby_age_sex(x),axis=1)
 ages.head()
 
 ages=ages.groupby('group').agg({'Age':'mean'})
@@ -49,7 +49,7 @@ train.set_index('group',inplace=True)
 test=test.join(ages,how='left')
 train=train.join(ages,how='left')
 
-test.loc[test['Age'.isna(),'Age']]=test.loc[test['Age'].isna()]['Avg Age']
+test.loc[test['Age'.isna(),'Age']]=test.loc[test['Age'].isna()]['Age']
 test.drop('Avg Age',axis=1,inplace=True)
 test.head()
 
@@ -76,7 +76,6 @@ test.head()
 def build_mapping(arr):
     arr=sorted(set(arr))
     i=0
-
     for ea in arr:
         i+=1
         try:
@@ -84,9 +83,9 @@ def build_mapping(arr):
         except:
             item_map={ea:1}
 
-    train['Sex']=train['Sex'].astype(str)
-    train['Embarked']=train['Embarked'].astype(str)
-    train['Cabin']=test['Cabin'].astype(str)
+train['Sex']=train['Sex'].astype(str)
+train['Embarked']=train['Embarked'].astype(str)
+train['Cabin']=test['Cabin'].astype(str)
 
 map_sex=build_mapping(train['Sex'])
 map_embarked=build_mapping(train['Embarked'].astype(str))
@@ -98,7 +97,7 @@ map_cabin=build_mapping(cabin_list)
 
 train['Sex']=train['Sex'].map(map_sex)
 train['Cabin']=train['Cabin'].map(map_cabin)
-train['Embarked']=train['Embarked'].map(map)
+train['Embarked']=train['Embarked'].map(map_embarked)
 
 dt=tree.DecisionTreeClassifier(min_samples_split=30)
 dt=dt.fit(train,train_target)
