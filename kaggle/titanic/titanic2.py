@@ -1,3 +1,5 @@
+import csv
+
 import numpy as np
 import pandas as pd
 from sklearn import preprocessing
@@ -15,6 +17,10 @@ filepath='./input/train.csv'
 all_df=pd.read_csv(filepath)
 cols = ["Survived","Name","Pclass","Sex", "Age", "Parch", "Fare", "Embarked"]
 all_df=all_df[cols]
+
+cols2 = ["Name","Pclass","Sex", "Age", "Parch", "Fare", "Embarked","PassengerId"]
+all_test_df=pd.read_csv('./input/test.csv')
+all_test_df=all_test_df[cols2]
 
 def preprocess_data(raw_df):
     df=raw_df.drop(['Name'],axis=1)
@@ -37,6 +43,7 @@ def preprocess_data(raw_df):
 msk=np.random.rand(len(all_df))<0.8
 train_df=all_df[msk]
 test_df=all_df[~msk]
+
 
 train_features,train_label=preprocess_data(train_df)
 test_features,test_label=preprocess_data(test_df)
@@ -102,6 +109,24 @@ print(all_df[-2:])
 all_features,all_label=preprocess_data(all_df)
 all_probability=model.predict(all_features)
 print(all_probability[:10])
+
+all_test_features,all_test_label=preprocess_data(all_test_df)
+all_test_probability=model.predict(all_test_features)
+
+# with open('test.csv','w') as f:
+#     writer=csv.writer(f)
+#     writer.writerows(all_test_probability)
+#     model.predict()
+
+def format(x):
+    if x:
+        return 1
+    else:
+        return 0
+all_test_df.drop(columns=['Name','Pclass', 'Sex', 'Age', 'Parch', 'Fare', 'Embarked'], axis=1,inplace=True)
+all_test_df.insert(1,'Survived',all_test_probability<0.5)
+all_test_df['Survived']=all_test_df['Survived'].apply(format)
+all_test_df.to_csv('result.csv')
 
 print("*"*20)
 new_df=all_df
