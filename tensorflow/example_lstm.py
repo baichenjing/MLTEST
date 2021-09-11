@@ -17,7 +17,11 @@ def get_batch():
     seq=np.sin(xs)
     res=np.cos(xs)
     BATCH_START+=TIME_STEPS
+<<<<<<< HEAD
     plt.plt(xs[0,:],np.newaxis)
+=======
+    plt.plt(xs[0,:],np.newaxls)
+>>>>>>> 5e3db18660cc916dfbc4c7fe4785039644c74a8c
     plt.show()
     return [seq[:,:,np.newaxis],res[:,:,np.newaxis],xs]
 
